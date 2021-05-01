@@ -61,6 +61,12 @@
          android:summary="@string/volte_icon_summary"
          android:defaultValue="true"/>
 
+    <com.msm.xtended.preferences.SystemSettingSwitchPreference
+        android:key="statusbar_icons_style"
+        android:title="@string/statusbar_icons_style"
+        android:summary="@string/statusbar_icons_style_summary"
+        android:defaultValue="true" />
+
     <com.msm.xtended.preferences.SystemSettingListPreference
          android:key="volte_icon_style"
          android:title="@string/volte_icon_style_title"
