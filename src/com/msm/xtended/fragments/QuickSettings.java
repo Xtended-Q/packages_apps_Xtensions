@@ -44,6 +44,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private static final String PREF_ROWS_PORTRAIT = "qs_rows_portrait";
     private static final String PREF_ROWS_LANDSCAPE = "qs_rows_landscape";
     private static final String X_FOOTER_TEXT_STRING = "x_footer_text_string";
+    private static final String HEADER_ICONS_STYLE = "headers_icons_style";
 
     private CustomSeekBarPreference mQsColumnsPortrait;
     private CustomSeekBarPreference mQsColumnsLandscape;
@@ -52,6 +53,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private CustomSeekBarPreference mQsRowsLandscape;
     private ListPreference mQuickPulldown;
     private SystemSettingEditTextPreference mFooterString;
+    private SystemSettingSwitchPreference mHeaderIconsStyle;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -110,6 +112,11 @@ public class QuickSettings extends SettingsPreferenceFragment implements
             Settings.System.putString(getActivity().getContentResolver(),
                     Settings.System.X_FOOTER_TEXT_STRING, "MSM-Xtended");
         }
+
+        mHeaderIconsStyle = findPreference(HEADER_ICONS_STYLE);
+        mHeaderIconsStyle.setChecked((Settings.System.getInt(resolver,
+                Settings.System.HEADER_ICONS_STYLE, 0) == 1));
+        mHeaderIconsStyle.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -156,6 +163,12 @@ public class QuickSettings extends SettingsPreferenceFragment implements
                 Settings.System.putString(getActivity().getContentResolver(),
                         Settings.System.X_FOOTER_TEXT_STRING, "MSM-Xtended");
             }
+            return true;
+        } else if (preference == mHeaderIconsStyle) {
+            boolean value = (Boolean) newValue;
+            Settings.System.putInt(resolver,
+                    Settings.System.HEADER_ICONS_STYLE, value ? 1 : 0);
+            XtendedUtils.showSystemUiRestartDialog(getContext());
             return true;
         }
         return false;

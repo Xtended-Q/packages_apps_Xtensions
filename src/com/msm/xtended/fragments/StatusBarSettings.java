@@ -46,8 +46,10 @@ public class StatusBarSettings extends SettingsPreferenceFragment implements
     private static final String MISSED_CALL_BREATH = "missed_call_breath";
     private static final String VOICEMAIL_BREATH = "voicemail_breath";
     private static final String STATUSBAR_DUAL_ROW = "statusbar_dual_row";
+    private static final String STATUSBAR_ICONS_STYLE = "statusbar_icons_style";
 
     private SystemSettingSwitchPreference mStatusbarDualRow;
+    private SystemSettingSwitchPreference mStatusbarIconsStyle;
     private SwitchPreference mSmsBreath;
     private SwitchPreference mMissedCallBreath;
     private SwitchPreference mVoicemailBreath;
@@ -66,6 +68,11 @@ public class StatusBarSettings extends SettingsPreferenceFragment implements
         mStatusbarDualRow.setChecked((Settings.System.getInt(getActivity().getContentResolver(),
                 Settings.System.STATUSBAR_DUAL_ROW, 0) == 1));
         mStatusbarDualRow.setOnPreferenceChangeListener(this);
+
+        mStatusbarIconsStyle = (SystemSettingSwitchPreference) findPreference(STATUSBAR_ICONS_STYLE);
+        mStatusbarIconsStyle.setChecked((Settings.System.getInt(resolver,
+                Settings.System.STATUSBAR_ICONS_STYLE, 0) == 1));
+        mStatusbarIconsStyle.setOnPreferenceChangeListener(this);
 
             // Breathing Notifications
             mSmsBreath = (SwitchPreference) findPreference(SMS_BREATH);
@@ -114,6 +121,12 @@ public class StatusBarSettings extends SettingsPreferenceFragment implements
                 boolean value = (Boolean) objValue;
                 Settings.System.putInt(getActivity().getContentResolver(),
                     Settings.System.STATUSBAR_DUAL_ROW, value ? 1 : 0);
+                XtendedUtils.showSystemUiRestartDialog(getContext());
+                return true;
+            } else if (preference == mStatusbarIconsStyle) {
+                boolean value = (Boolean) objValue;
+                Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.STATUSBAR_ICONS_STYLE, value ? 1 : 0);
                 XtendedUtils.showSystemUiRestartDialog(getContext());
                 return true;
             }
